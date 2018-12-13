@@ -10,13 +10,14 @@ var spawnX, spawnY;
 // Map grid
 var pix = [], distances = [];
 var created = false;
+var d = [-1, 0, 1, 0, 0, 1, 0, -1, -1, -1, 1, 1, -1, 1, 1, -1];
 // Colors
 var bg, road, finish;
 
 function setup() {
   createCanvas(1300, 680);
-  bg = color(230, 230, 230, 255); road = color(128, 128, 128, 255); finish = color(255, 0, 0, 255);
-  background(bg);
+  bg = [230, 230, 230, 255]; road = [128, 128, 128, 255]; finish = [255, 0, 0, 255];
+  background(makeColor(bg));
   frameRate(300);
   blockType = [road, finish];
 }
@@ -33,7 +34,7 @@ function draw() {
         fill('green');
         ellipse(mouseX,mouseY,30);
         fill('white');
-        text(road[0], mouseX, mouseY);
+        text(distances[mouseX][mouseY], mouseX, mouseY);
       }
     }
   }
@@ -60,41 +61,6 @@ function draw() {
   text('Clear', mPos+25, mTop+345);
 }
 
-function keyPressed(){
-  if(key == 'e')
-    editor = true;
-  if(key == 'q')
-    editor = false;
-}
-
-function isClicked(){
-  if(mouseX > mPos && mouseX < mPos + mWidth
-    && mouseY > mTop && mouseY < mHeight+mTop){
-    modeNum = 0;
-    return true;
-  }
-  if(mouseX > mPos && mouseX < mPos + mWidth
-    && mouseY > mTop+80 && mouseY < mHeight+mTop+80){
-    modeNum = 1;
-    return true;
-  }
-  if(mouseX > mPos && mouseX < mPos + mWidth
-    && mouseY > mTop+160 && mouseY < mHeight+mTop+160){
-    modeNum = 2;
-    return true;
-  }
-  if(mouseX > mPos && mouseX < mPos + mWidth
-    && mouseY > mTop+240 && mouseY < mHeight+mTop+240){
-    editor = false;
-    bfs();
-    return true;
-  }
-  if(mouseX > mPos && mouseX < mPos + mWidth
-    && mouseY > mTop+320 && mouseY < mHeight+mTop+320){
-    background(230);
-  }
-  return false;
-}
 function bfs(){
   loadPixels();
   var redX = -1, redY = -1;
@@ -103,6 +69,7 @@ function bfs(){
     distances[x] = []
     for(var i = 0; i < height; i++){
       pix[x][i] = get(x, i);
+      distances[x][i] = colorAssign(pix[x][i]);
       var t = [get(x,i)[0], get(x,i)[1], get(x,i)[2], get(x,i)[3]];
     }
   }
@@ -110,4 +77,17 @@ function bfs(){
   ellipse(mouseX,mouseY,100);
   created = true;
   var q = []
+  var bfsX, bfsY;
+  for(var i = 0; i < distances.length; i++){
+    for(var x = 0; x < distances[i].length; x++){
+      for(var t = 0; t < d.length; t+=2){
+        if(!isOut(i+d[t], x+d[t+1]) && distances[i+d[t]][x+d[t+1]] == -2 && distances[i][x] == -1){
+          bfsX = i; bfsY = x;
+        }
+      }
+    }
+  }
+  q.push({bfsX, bfsY});
+  console.log(bfsX)
+  console.log(bfsY)
 }
