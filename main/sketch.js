@@ -6,7 +6,11 @@ var blockSize = [40, 15]
 // Position and dimensions of menu tabs
 var mWidth = 80, mHeight = 40, mPos = 1150, mTop = 50
 // Starting position of racers
-var spawnX, spawnY
+var spawnX, spawnY, starter = false, cango = false
+// Population & lifespan
+var population
+var lifespan = 1500
+var cnt = 0
 // Map grid
 var pix = [], distances = []
 var created = false
@@ -18,7 +22,8 @@ function setup() {
   createCanvas(1300, 680);
   bg = [230, 230, 230, 255]; road = [128, 128, 128, 255]; finish = [255, 0, 0, 255];
   background(makeColor(bg))
-  frameRate(300)
+  population = new Population()
+  frameRate(150)
   blockType = [road, finish]
 }
 function draw() {
@@ -30,35 +35,22 @@ function draw() {
         fill(blockType[modeNum])
         ellipse(mouseX,mouseY,blockSize[modeNum])
       }
-      else if(created){
-        fill('green')
-        ellipse(mouseX,mouseY,30)
-        fill('white')
-        text(distances[mouseX][mouseY], mouseX, mouseY)
+      if(starter && cnt == 0){
+        spawnX = mouseX
+        spawnY = mouseY
+        population.getStarted()
+        cango = true
       }
     }
   }
-  if(editor){
-    fill(255, 0, 255)
-    strokeWeight(3)
-    stroke(0)
+  showBlocks()
+  if(cango){
+    population.run()
+    cnt++
   }
-  else {
-    fill(255)
-    noStroke()
-  }
-  rect(mPos, mTop, mWidth, mHeight)
-  rect(mPos, mTop+80, mWidth, mHeight)
-  rect(mPos, mTop+160, mWidth, mHeight)
-  rect(mPos, mTop+240, mWidth, mHeight)
-  rect(mPos, mTop+320, mWidth, mHeight)
-  fill(0)
-  noStroke()
-  text('Road', mPos+25, mTop+25)
-  text('Start', mPos+25, mTop+105)
-  text('Finish', mPos+25, mTop+185)
-  text('Run', mPos+25, mTop+265)
-  text('Clear', mPos+25, mTop+345)
+
+  if(cnt == lifespan)
+    starter = false
 }
 
 function bfs(){
@@ -88,9 +80,9 @@ function bfs(){
     }
   }
   q.push([bfsX, bfsY, 0]);
+  distances[bfsX][bfsY] = 0
   while(q.length > 0){
     var r = q.shift()
-    distances[r[0]][r[1]] = r[2]
     var i = r[0], x = r[1]
     for(var t = 0; t < d.length; t+=2){
       if(!isOut(i+d[t], x+d[t+1]) && distances[i+d[t]][x+d[t+1]] == -1){

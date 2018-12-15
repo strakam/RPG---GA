@@ -35,7 +35,8 @@ function isClicked(){
   }
   if(mouseX > mPos && mouseX < mPos + mWidth
     && mouseY > mTop+240 && mouseY < mHeight+mTop+240){
-    editor = false;
+    editor = false
+    starter = true
     bfs();
     return true;
   }
