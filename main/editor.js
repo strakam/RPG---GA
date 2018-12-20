@@ -8,6 +8,12 @@ function showBlocks(){
     fill(255)
     noStroke()
   }
+  for(var i = 0; i < track.length; i++){
+    noStroke()
+    fill(blockType[track[i][2]])
+    ellipse(track[i][0],track[i][1],blockSize[track[i][2]])
+  }
+  fill(255, 0, 255, 255)
   rect(mPos, mTop, mWidth, mHeight)
   rect(mPos, mTop+80, mWidth, mHeight)
   rect(mPos, mTop+160, mWidth, mHeight)

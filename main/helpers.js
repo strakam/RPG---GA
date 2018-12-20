@@ -52,4 +52,11 @@ function keyPressed(){
     editor = true;
   if(key == 'q')
     editor = false;
+  if(key == 'p'){
+    if(!pause)
+      pause = true;
+    else {
+      pause = false
+    }
+  }
 }

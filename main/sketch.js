@@ -1,19 +1,19 @@
 // Editor mode variables
-var editor = true
+var editor = true, pause = true
 var modeNum = 0
 var blockType
-var blockSize = [40, 15]
+var blockSize = [70, 15]
 // Position and dimensions of menu tabs
-var mWidth = 80, mHeight = 40, mPos = 1150, mTop = 50
+var mWidth = 80, mHeight = 40, mPos = 40, mTop = 50
 // Starting position of racers
 var spawnX, spawnY, starter = false, cango = false
 // Population & lifespan
-var population
-var lifespan = 1500
-var cnt = 0
+var population, popSize = 80, chosenOnes = 5
+var lifespan = 900
+var cnt = 0, done = 0
 // Map grid
-var pix = [], distances = []
-var created = false
+var pix = [], distances = [], track = []
+var created = false, trackLength = 0
 var d = [-1, 0, 1, 0, 0, 1, 0, -1, -1, -1, 1, 1, -1, 1, 1, -1]
 // Colors
 var bg, road, finish
@@ -27,33 +27,43 @@ function setup() {
   blockType = [road, finish]
 }
 function draw() {
-	//background(255, 255, 0);
-  noStroke()
+  //if(pause)
+	 background(bg);
+   text(frameRate(), 40, 5000)
   if(mouseIsPressed){
     if(!isClicked()){
       if(editor){
-        fill(blockType[modeNum])
-        ellipse(mouseX,mouseY,blockSize[modeNum])
+        track.push([mouseX,mouseY,modeNum])
       }
       if(starter && cnt == 0){
         spawnX = mouseX
         spawnY = mouseY
         population.getStarted()
         cango = true
+        starter = false
       }
     }
   }
-  showBlocks()
+  if(pause)
+    showBlocks()
+
   if(cango){
     population.run()
     cnt++
   }
-
-  if(cnt == lifespan)
-    starter = false
+  if(cnt == lifespan || population.checkRunners()){
+    population.evaluate()
+    population.selection()
+    cnt = 0
+    done = 0
+  }
+  if(cango && mouseIsPressed){
+    console.log(distances[mouseX][mouseY])
+  }
 }
 
 function bfs(){
+  showBlocks()
   loadPixels();
   var redX = -1, redY = -1;
   for(var x = 0; x < width; x++){
@@ -65,8 +75,6 @@ function bfs(){
       var t = [get(x,i)[0], get(x,i)[1], get(x,i)[2], get(x,i)[3]]
     }
   }
-  fill('yellow')
-  ellipse(mouseX,mouseY,100)
   created = true
   var q = []
   var bfsX, bfsY
@@ -84,6 +92,7 @@ function bfs(){
   while(q.length > 0){
     var r = q.shift()
     var i = r[0], x = r[1]
+    trackLength = r[2]
     for(var t = 0; t < d.length; t+=2){
       if(!isOut(i+d[t], x+d[t+1]) && distances[i+d[t]][x+d[t+1]] == -1){
         q.push([i+d[t], x+d[t+1], r[2]+1])

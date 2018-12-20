@@ -1,24 +1,39 @@
-function Car(dna){
+function Car(dna, x){
 
   // Position, velocity, acceleration
   this.pos = createVector(spawnX, spawnY)
   this.vel = createVector()
   this.acc = createVector()
+  this.lastPos = createVector()
     // Car status
   this.finished = false
   this.crashed = false
-  if(dna)
+  this.fitness = 0
+  this.color = color(random(255), random(255), random(255), 255)
+
+  if(dna){
     this.dna = dna
-  else
+    this.color = color(0, 0, 0, 0)
+  }
+  else{
     this.dna = new DNA()
+  }
+  if(x){
+    this.color = color(0, 0, 0, 255)
+  }
+  else{
+    this.color = color(0, 255, 0, 255)
+  }
 
   this.beginPos = function(){
     this.pos.x = spawnX
     this.pos.y = spawnY
-    console.log(floor(this.pos.x))
   }
-  // Calculate fitness
 
+  // Calculate fitness
+  this.calcFitness = function(){
+    this.fitness += distances[floor(this.lastPos.x)][floor(this.lastPos.y)]
+  }
   // Applying force to a car
   this.applyForce = function(force){
     this.acc.add(force)
@@ -26,12 +41,18 @@ function Car(dna){
   // Update
   this.update = function(){
     var finishDist = distances[floor(this.pos.x)][floor(this.pos.y)]
-    if(finishDist < 30)
+    if(finishDist < 5 && finishDist != -3){
       this.finished = true
-    else if(finishDist == -2 || finishDist == -1)
+      done++
+    }
+    else if(finishDist == -2 || finishDist == -3){
       this.crashed = true
-
-    if(!this.finished || !this.crashed){
+      done++
+    }
+    if(!this.finished && !this.crashed){
+      if(distances[floor(this.pos.x)][floor(this.pos.y)] > 0){
+        this.lastPos = createVector(floor(this.pos.x), floor(this.pos.y))
+      }
       this.applyForce(this.dna.genes[cnt])
       this.vel.add(this.acc)
       this.pos.add(this.vel)
@@ -42,10 +63,9 @@ function Car(dna){
   // Show
   this.show = function(){
     push()
-    fill(0, 100, 255, 255)
+    fill(this.color)
     translate(this.pos.x, this.pos.y);
-    ellipse(0, 0, 6)
-
+    ellipse(0, 0, 10)
     pop()
   }
 }
