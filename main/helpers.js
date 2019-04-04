@@ -44,6 +44,9 @@ function isClicked(){
     && mouseY > mTop+320 && mouseY < mHeight+mTop+320){
     background(230);
   }
+  if(distances.length > 0){
+    console.log(distances[mouseX][mouseY]);
+  }
   return false;
 }
 

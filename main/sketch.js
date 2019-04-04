@@ -2,17 +2,18 @@
 var editor = true, pause = true
 var modeNum = 0
 var blockType
-var blockSize = [70, 15]
+var blockSize = [70, 15, 5]
 // Position and dimensions of menu tabs
 var mWidth = 80, mHeight = 40, mPos = 40, mTop = 50
 // Starting position of racers
 var spawnX, spawnY, starter = false, cango = false
 // Population & lifespan
-var population, popSize = 80, chosenOnes = 5
+var population, chosenOnes = 5, newBorns = 400
 var lifespan = 900
-var cnt = 0, done = 0
+// Checkpoint variables
+var cnt = 0, cpfreq = 50, cpcounter = 0
 // Map grid
-var pix = [], distances = [], track = []
+var pix = [], distances = [], track = [], checkpoints = []
 var created = false, trackLength = 0
 var d = [-1, 0, 1, 0, 0, 1, 0, -1, -1, -1, 1, 1, -1, 1, 1, -1]
 // Colors
@@ -20,16 +21,16 @@ var bg, road, finish
 
 function setup() {
   createCanvas(1300, 680);
-  bg = [230, 230, 230, 255]; road = [128, 128, 128, 255]; finish = [255, 0, 0, 255];
+  bg = [230, 230, 230, 255]; road = [128, 128, 128, 255]; finish = [255, 0, 0, 255]; cp = [255, 153, 255, 255];
   background(makeColor(bg))
   population = new Population()
   frameRate(150)
-  blockType = [road, finish]
+  blockType = [road, finish, cp]
 }
 function draw() {
   //if(pause)
-	 background(bg);
-   text(frameRate(), 40, 5000)
+	background(bg);
+  text(frameRate(), 40, 5000)
   if(mouseIsPressed){
     if(!isClicked()){
       if(editor){
@@ -51,14 +52,11 @@ function draw() {
     population.run()
     cnt++
   }
+  // Check whether its time to restart
   if(cnt == lifespan || population.checkRunners()){
     population.evaluate()
     population.selection()
     cnt = 0
-    done = 0
-  }
-  if(cango && mouseIsPressed){
-    console.log(distances[mouseX][mouseY])
   }
 }
 
@@ -96,8 +94,16 @@ function bfs(){
     for(var t = 0; t < d.length; t+=2){
       if(!isOut(i+d[t], x+d[t+1]) && distances[i+d[t]][x+d[t+1]] == -1){
         q.push([i+d[t], x+d[t+1], r[2]+1])
+        if((r[2]+1) % cpfreq == 0){
+          track.push([i, x, 2])
+        }
         distances[i+d[t]][x+d[t+1]] = r[2]+1
       }
     }
   }
+  for(var i = cpfreq; i < trackLength; i+=cpfreq){
+    checkpoints.push(i)
+  }
+  reverse(checkpoints)
+  console.log(checkpoints);
 }

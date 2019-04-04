@@ -6,17 +6,18 @@ function DNA(genes){
     this.genes = []
     for(var i = 0; i < lifespan; i++){
       this.genes[i] = p5.Vector.random2D()
-      this.genes[i].setMag(0.8)
+      this.genes[i].setMag(random(1))
     }
   }
   // Mutation
   this.mutate = function(){
     var pole = []
     for(var i = 0; i < lifespan; i++){
-      var prob = 0.01+i/lifespan*0.03
+      var prob = 0.1
       if(random(1) < prob){
         pole[i] = p5.Vector.random2D()
-        pole[i].setMag(0.8)
+        //zmenit mag na random
+        pole[i].setMag(random(1))
       }
       else {
         pole[i] = this.genes[i]

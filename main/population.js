@@ -2,13 +2,13 @@ function Population(){
   // Array of cars
   this.cars = []
   // Create new Cars
-  for(var i = 0; i < popSize; i++){
+  for(var i = 0; i < newBorns; i++){
     this.cars[i] = new Car()
   }
 
   // Set starting position to every car
   this.getStarted = function(){
-    for(var i = 0; i < popSize; i++){
+    for(var i = 0; i < newBorns; i++){
       this.cars[i].beginPos()
     }
   }
@@ -24,7 +24,7 @@ function Population(){
     for(var i = 0; i < chosenOnes; i++){
       var nc = this.cars[i].dna
       nextGen.push(new Car(nc))
-      for(var x = 0; x < 400; x++){
+      for(var x = 0; x < newBorns; x++){
         var nnc = nc.mutate()
         nextGen.push(new Car(nnc, true))
       }
