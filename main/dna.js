@@ -10,9 +10,9 @@ function DNA(genes){
     }
   }
   // Mutation
-  this.mutate = function(){
+  this.mutate = function(mark){
     var pole = []
-    for(var i = 0; i < lifespan; i++){
+    for(var i = mark; i < lifespan; i++){
       var prob = 0.1
       if(random(1) < prob){
         pole[i] = p5.Vector.random2D()

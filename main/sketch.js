@@ -11,7 +11,8 @@ var spawnX, spawnY, starter = false, cango = false
 var population, chosenOnes = 5, newBorns = 400
 var lifespan = 900
 // Checkpoint variables
-var cnt = 0, cpfreq = 50, cpcounter = 0
+var cnt = 0, cpfreq = 100, cpdifference = 3, cpcounter = 3, bestTime = 100000000, bestNow = 100000000
+var successCounter = 0, successions = 2, newtime = 0
 // Map grid
 var pix = [], distances = [], track = [], checkpoints = []
 var created = false, trackLength = 0
@@ -56,7 +57,7 @@ function draw() {
   if(cnt == lifespan || population.checkRunners()){
     population.evaluate()
     population.selection()
-    cnt = 0
+    cnt = newtime
   }
 }
 
@@ -104,6 +105,7 @@ function bfs(){
   for(var i = cpfreq; i < trackLength; i+=cpfreq){
     checkpoints.push(i)
   }
+  cpcounter = cpdifference
   reverse(checkpoints)
   console.log(checkpoints);
 }
