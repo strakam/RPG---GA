@@ -12,12 +12,16 @@ function DNA(genes){
   // Mutation
   this.mutate = function(mark){
     var pole = []
-    for(var i = mark; i < lifespan; i++){
-      var prob = 0.1
-      if(random(1) < prob){
-        pole[i] = p5.Vector.random2D()
-        //zmenit mag na random
-        pole[i].setMag(random(1))
+    for(var i = 0; i < lifespan; i++){
+      var prob = 0.15
+      if(i > mark){
+        if(random(1) < prob){
+          pole[i] = p5.Vector.random2D()
+          pole[i].setMag(random(1))
+        }
+        else {
+          pole[i] = this.genes[i]
+        }
       }
       else {
         pole[i] = this.genes[i]

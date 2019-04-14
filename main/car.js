@@ -6,12 +6,16 @@ function Car(dna, x){
   this.acc = createVector()
   this.lastPos = createVector()
     // Car status
-  this.st = 0
-  this.dnaMark = 0
+  this.nextStart = 0
   this.finished = false
   this.crashed = false
   this.fitness = 0
   this.penalty = 0 // Addition after crashing
+  this.nextvelx = 0
+  this.nextvely = 0
+  this.nextaccx = 0
+  this.nextaccy = 0
+  this.nextDna = []
   this.color = color(random(255), random(255), random(255), 255)
 
   if(dna){
@@ -45,9 +49,25 @@ function Car(dna, x){
   this.applyForce = function(force){
     this.acc.add(force)
   }
-  // Update
+
   this.update = function(){
     // Check distance from finish
+    if(!this.finished && !this.crashed){
+      if(distances[floor(this.pos.x)][floor(this.pos.y)] > 0){
+        this.lastPos = createVector(floor(this.pos.x), floor(this.pos.y))
+        this.penalty = distances[this.lastPos.x][this.lastPos.y]
+      }
+      if(!donezo){
+        this.applyForce(this.dna.genes[cnt])
+      }
+      else {
+        this.applyForce(finalGenes[cnt])
+      }
+      this.vel.add(this.acc)
+      this.vel.limit(6)
+      this.pos.add(this.vel)
+      this.acc.mult(0)
+    }
     var finishDist = distances[floor(this.pos.x)][floor(this.pos.y)]
     if(finishDist < 5 && finishDist != -3 && finishDist != -2){
       this.finished = true
@@ -55,24 +75,19 @@ function Car(dna, x){
     else if(finishDist == -2 || finishDist == -3){
       this.crashed = true
     }
-    else if(finishDist <= checkpoints[cpcounter] && finishDist != -3 && finishDist != 2){
+    else if(finishDist <= checkpoints[cpcounter] && finishDist != -3){
       bestNow = min(bestNow, cnt)
       this.finished = true
     }
-    if(finishDist <= checkpoints[cpcounter-cpdifference] && this.st == 0){
-      this.nextPosition = createVector(this.lastPos.x, this.lastPos.y)
-      this.st = cnt
-    }
-    if(!this.finished && !this.crashed){
-      if(distances[floor(this.pos.x)][floor(this.pos.y)] > 0){
-        this.lastPos = createVector(floor(this.pos.x), floor(this.pos.y))
-        this.penalty = this.lastPos
-      }
-      this.applyForce(this.dna.genes[cnt])
-      this.vel.add(this.acc)
-      this.pos.add(this.vel)
-      this.acc.mult(0)
-      this.vel.limit(4)
+    if(finishDist <= checkpoints[cpcounter-cpdifference] && this.nextStart == 0 && finishDist != -3){
+      //console.log('toto sa stane')
+      this.nextPosition = createVector(this.pos.x, this.pos.y)
+      this.nextStart = cnt
+      this.nextvelx = this.vel.x
+      this.nextvely = this.vel.y
+      this.nextaccx = this.acc.x
+      this.nextaccy = this.acc.y
+      this.nextDna = this.dna.genes
     }
   }
   // Show

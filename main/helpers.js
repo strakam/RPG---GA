@@ -62,4 +62,9 @@ function keyPressed(){
       pause = false
     }
   }
+  if(key == 's'){
+    cnt = 0
+    spawnX = beginX
+    spawnY = beginY
+  }
 }

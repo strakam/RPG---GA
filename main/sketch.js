@@ -7,12 +7,13 @@ var blockSize = [70, 15, 5]
 var mWidth = 80, mHeight = 40, mPos = 40, mTop = 50
 // Starting position of racers
 var spawnX, spawnY, starter = false, cango = false
+var beginX, beginY
 // Population & lifespan
 var population, chosenOnes = 5, newBorns = 400
 var lifespan = 900
 // Checkpoint variables
-var cnt = 0, cpfreq = 100, cpdifference = 3, cpcounter = 3, bestTime = 100000000, bestNow = 100000000
-var successCounter = 0, successions = 2, newtime = 0
+var cnt = 0, cpfreq = 100, cpdifference = 1, cpcounter = 1, bestTime = 100000000, bestNow = 100000000
+var successCounter = 0, successions = 1, newtime = 0
 // Map grid
 var pix = [], distances = [], track = [], checkpoints = []
 var created = false, trackLength = 0
@@ -40,6 +41,8 @@ function draw() {
       if(starter && cnt == 0){
         spawnX = mouseX
         spawnY = mouseY
+        beginX = spawnX
+        beginY = spawnY
         population.getStarted()
         cango = true
         starter = false
@@ -107,5 +110,6 @@ function bfs(){
   }
   cpcounter = cpdifference
   reverse(checkpoints)
+  checkpoints.push(5)
   console.log(checkpoints);
 }
