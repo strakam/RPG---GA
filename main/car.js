@@ -20,15 +20,12 @@ function Car(dna, x){
     this.dna = dna
     this.color = color(0, 0, 0, 0)
   }
-  else{
+  else
     this.dna = new DNA()
-  }
-  if(x){
+  if(x)
     this.color = color(0, 0, 0, 255)
-  }
-  else{
+  else
     this.color = color(0, 255, 0, 255)
-  }
 
   // Starting position
   this.beginPos = function(){
@@ -45,6 +42,7 @@ function Car(dna, x){
   }
   // Applying force to a car
   this.applyForce = function(force){
+    force.limit(0.4)
     this.acc.add(force)
   }
 
@@ -55,12 +53,10 @@ function Car(dna, x){
         this.lastPos = createVector(floor(this.pos.x), floor(this.pos.y))
         this.penalty = distances[this.lastPos.x][this.lastPos.y]
       }
-      if(!donezo){
+      if(!donezo)
         this.applyForce(this.dna.genes[cnt])
-      }
-      else {
+      else
         this.applyForce(finalGenes[cnt])
-      }
       this.vel.add(this.acc)
       this.vel.limit(6)
       this.pos.add(this.vel)
@@ -98,6 +94,7 @@ function Car(dna, x){
     rotate(angle)
     fill(this.color)
     beginShape()
+
     vertex(0, -4 * 2)
     vertex(-4, 4 * 2)
     vertex(4, 4 * 2)

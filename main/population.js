@@ -1,4 +1,4 @@
-var currentStart = 0
+var currentStart = 0, mutationRate = 0.15
 var nextvelx = 0
 var nextvely = 0
 var donezo = false
@@ -38,7 +38,11 @@ function Population(){
     var nextGen = []
     var nc = this.cars[0].dna
     for(var x = 0; x < newBorns; x++){
-      var nnc = nc.mutate(currentStart)
+      if(x < 200)
+        mutationRate = 0.3
+      else
+        mutationRate = 0.15
+      var nnc = nc.mutate(currentStart, mutationRate)
       nextGen.push(new Car(nnc, true))
       nextGen[x].vel.x = nextvelx
       nextGen[x].vel.y = nextvely
@@ -58,7 +62,11 @@ function Population(){
     currentStart = model.nextStart
     var nextGen = []
     for(var x = 0; x < newBorns; x++){
-      var nnc = nc.mutate(model.nextStart-1)
+      if(x < 200)
+        mutationRate = 0.3
+      else
+        mutationRate = 0.15
+      var nnc = nc.mutate(model.nextStart-1, mutationRate)
       nextGen.push(new Car(nnc, true))
       if(cpcounter != checkpoints.length-1){
         nextGen[x].vel.x = nextvelx
