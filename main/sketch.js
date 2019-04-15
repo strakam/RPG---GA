@@ -1,25 +1,23 @@
 // Editor mode variables
 var editor = true, pause = true
+// Parameters of blocks
 var modeNum = 0
 var blockType
 var blockSize = [70, 15, 5]
 // Position and dimensions of menu tabs
-var mWidth = 80, mHeight = 40, mPos = 40, mTop = 50
+var menuWidth = 80, menuHeight = 40, menuPos = 40, menuTop = 50
 // Starting position of racers
-var spawnX, spawnY, starter = false, cango = false
-var beginX, beginY
-// Population & lifespan
-var population, chosenOnes = 5, newBorns = 400
-var lifespan = 900
+var spawnX, spawnY, beginX, beginY, starter = false, cango = false
 // Checkpoint variables
 var cnt = 0, cpfreq = 100, cpdifference = 1, cpcounter = 1, bestTime = 100000000, bestNow = 100000000
 var successCounter = 0, successions = 1, newtime = 0
 // Map grid
-var pix = [], distances = [], track = [], checkpoints = []
+var pix = [], distances = [], track = [], checkpoints = [], trace = []
 var created = false, trackLength = 0
 var d = [-1, 0, 1, 0, 0, 1, 0, -1, -1, -1, 1, 1, -1, 1, 1, -1]
 // Colors
-var bg, road, finish
+var bg, road, finish, trace = []
+var thisframe = false
 
 function setup() {
   createCanvas(1300, 680);
@@ -51,7 +49,7 @@ function draw() {
   }
   if(pause)
     showBlocks()
-
+  thisframe = false
   if(cango){
     population.run()
     cnt++
@@ -61,6 +59,7 @@ function draw() {
     population.evaluate()
     population.selection()
     cnt = newtime
+    trace = []
   }
 }
 

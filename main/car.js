@@ -13,8 +13,6 @@ function Car(dna, x){
   this.penalty = 0 // Addition after crashing
   this.nextvelx = 0
   this.nextvely = 0
-  this.nextaccx = 0
-  this.nextaccy = 0
   this.nextDna = []
   this.color = color(random(255), random(255), random(255), 255)
 
@@ -66,6 +64,10 @@ function Car(dna, x){
       this.vel.add(this.acc)
       this.vel.limit(6)
       this.pos.add(this.vel)
+      if(!thisframe && currentStart > cnt){
+        trace.push([this.pos.x, this.pos.y, mag(this.vel.x, this.vel.y)])
+        thisframe = true
+      }
       this.acc.mult(0)
     }
     var finishDist = distances[floor(this.pos.x)][floor(this.pos.y)]
@@ -85,17 +87,21 @@ function Car(dna, x){
       this.nextStart = cnt
       this.nextvelx = this.vel.x
       this.nextvely = this.vel.y
-      this.nextaccx = this.acc.x
-      this.nextaccy = this.acc.y
       this.nextDna = this.dna.genes
     }
   }
   // Show
   this.show = function(){
+    var angle = this.vel.heading() + PI / 2
     push()
+    translate(this.pos.x, this.pos.y)
+    rotate(angle)
     fill(this.color)
-    translate(this.pos.x, this.pos.y);
-    ellipse(0, 0, 10)
+    beginShape()
+    vertex(0, -4 * 2)
+    vertex(-4, 4 * 2)
+    vertex(4, 4 * 2)
+    endShape(CLOSE)
     pop()
   }
 }

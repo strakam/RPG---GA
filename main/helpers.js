@@ -18,30 +18,30 @@ function isOut(x, y){
 }
 
 function isClicked(){
-  if(mouseX > mPos && mouseX < mPos + mWidth
-    && mouseY > mTop && mouseY < mHeight+mTop){
+  if(mouseX > menuPos && mouseX < menuPos + menuWidth
+    && mouseY > menuTop && mouseY < menuHeight+menuTop){
     modeNum = 0;
     return true;
   }
-  if(mouseX > mPos && mouseX < mPos + mWidth
-    && mouseY > mTop+80 && mouseY < mHeight+mTop+80){
+  if(mouseX > menuPos && mouseX < menuPos + menuWidth
+    && mouseY > menuTop+80 && mouseY < menuHeight+menuTop+80){
     modeNum = 1;
     return true;
   }
-  if(mouseX > mPos && mouseX < mPos + mWidth
-    && mouseY > mTop+160 && mouseY < mHeight+mTop+160){
+  if(mouseX > menuPos && mouseX < menuPos + menuWidth
+    && mouseY > menuTop+160 && mouseY < menuHeight+menuTop+160){
     modeNum = 2;
     return true;
   }
-  if(mouseX > mPos && mouseX < mPos + mWidth
-    && mouseY > mTop+240 && mouseY < mHeight+mTop+240){
+  if(mouseX > menuPos && mouseX < menuPos + menuWidth
+    && mouseY > menuTop+240 && mouseY < menuHeight+menuTop+240){
     editor = false
     starter = true
     bfs();
     return true;
   }
-  if(mouseX > mPos && mouseX < mPos + mWidth
-    && mouseY > mTop+320 && mouseY < mHeight+mTop+320){
+  if(mouseX > menuPos && mouseX < menuPos + menuWidth
+    && mouseY > menuTop+320 && mouseY < menuHeight+menuTop+320){
     background(230);
   }
   if(distances.length > 0){
@@ -63,8 +63,6 @@ function keyPressed(){
     }
   }
   if(key == 's'){
-    cnt = 0
-    spawnX = beginX
-    spawnY = beginY
+    trace = []
   }
 }
