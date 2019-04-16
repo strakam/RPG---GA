@@ -33,9 +33,8 @@ function draw() {
   text(frameRate(), 40, 5000)
   if(mouseIsPressed){
     if(!isClicked()){
-      if(editor){
+      if(editor)
         track.push([mouseX,mouseY,modeNum])
-      }
       if(starter && cnt == 0){
         spawnX = mouseX
         spawnY = mouseY
@@ -79,34 +78,28 @@ function bfs(){
   created = true
   var q = []
   var bfsX, bfsY
-  for(var i = 0; i < distances.length; i++){
-    for(var x = 0; x < distances[i].length; x++){
-      for(var t = 0; t < d.length; t+=2){
+  for(var i = 0; i < distances.length; i++)
+    for(var x = 0; x < distances[i].length; x++)
+      for(var t = 0; t < d.length; t+=2)
         if(!isOut(i+d[t], x+d[t+1]) && distances[i+d[t]][x+d[t+1]] == -2 && distances[i][x] == -1){
           bfsX = i; bfsY = x
         }
-      }
-    }
-  }
   q.push([bfsX, bfsY, 0]);
   distances[bfsX][bfsY] = 0
   while(q.length > 0){
     var r = q.shift()
     var i = r[0], x = r[1]
     trackLength = r[2]
-    for(var t = 0; t < d.length; t+=2){
+    for(var t = 0; t < d.length; t+=2)
       if(!isOut(i+d[t], x+d[t+1]) && distances[i+d[t]][x+d[t+1]] == -1){
         q.push([i+d[t], x+d[t+1], r[2]+1])
-        if((r[2]+1) % cpfreq == 0){
+        if((r[2]+1) % cpfreq == 0)
           track.push([i, x, 2])
-        }
         distances[i+d[t]][x+d[t+1]] = r[2]+1
       }
-    }
   }
-  for(var i = cpfreq; i < trackLength; i+=cpfreq){
+  for(var i = cpfreq; i < trackLength; i+=cpfreq)
     checkpoints.push(i)
-  }
   cpcounter = cpdifference
   reverse(checkpoints)
   checkpoints.push(5)

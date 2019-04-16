@@ -30,19 +30,8 @@ function isClicked(){
   }
   if(mouseX > menuPos && mouseX < menuPos + menuWidth
     && mouseY > menuTop+160 && mouseY < menuHeight+menuTop+160){
-    modeNum = 2;
-    return true;
-  }
-  if(mouseX > menuPos && mouseX < menuPos + menuWidth
-    && mouseY > menuTop+240 && mouseY < menuHeight+menuTop+240){
-    editor = false
-    starter = true
     bfs();
     return true;
-  }
-  if(mouseX > menuPos && mouseX < menuPos + menuWidth
-    && mouseY > menuTop+320 && mouseY < menuHeight+menuTop+320){
-    background(230);
   }
   if(distances.length > 0){
     console.log(distances[mouseX][mouseY]);

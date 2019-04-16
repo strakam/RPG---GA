@@ -19,13 +19,11 @@ function DNA(genes){
           pole[i] = p5.Vector.random2D()
           pole[i].setMag(random(1))
         }
-        else {
+        else
           pole[i] = this.genes[i]
-        }
       }
-      else {
+      else
         pole[i] = this.genes[i]
-      }
     }
     return new DNA(pole)
   }

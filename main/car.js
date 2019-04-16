@@ -22,10 +22,10 @@ function Car(dna, x){
   }
   else
     this.dna = new DNA()
-  if(x)
+  if(!x)
     this.color = color(0, 0, 0, 255)
   else
-    this.color = color(0, 255, 0, 255)
+    this.color = color(200, 0, 255, 255)
 
   // Starting position
   this.beginPos = function(){

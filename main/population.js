@@ -36,14 +36,18 @@ function Population(){
       return
     }
     var nextGen = []
-    var nc = this.cars[0].dna
+    var nc = this.cars[0].dna, scout = false
     for(var x = 0; x < newBorns; x++){
-      if(x < 200)
-        mutationRate = 0.3
-      else
+      if(x < 200){
+        mutationRate = 0.4
+        scout = true
+      }
+      else{
         mutationRate = 0.15
+        scout = false
+      }
       var nnc = nc.mutate(currentStart, mutationRate)
-      nextGen.push(new Car(nnc, true))
+      nextGen.push(new Car(nnc, scout))
       nextGen[x].vel.x = nextvelx
       nextGen[x].vel.y = nextvely
     }
@@ -53,7 +57,7 @@ function Population(){
   //Next checkpoint generation
   this.nextCpSelection = function(){
     var model = this.cars[0]
-    var nc = new DNA(model.nextDna)
+    var nc = new DNA(model.nextDna), scout = false
     spawnX = beginX
     spawnY = beginY
     nextvelx = 0
@@ -62,12 +66,16 @@ function Population(){
     currentStart = model.nextStart
     var nextGen = []
     for(var x = 0; x < newBorns; x++){
-      if(x < 200)
-        mutationRate = 0.3
-      else
+      if(x < 200){
+        mutationRate = 0.4
+        scout = true
+      }
+      else{
         mutationRate = 0.15
+        scout = false
+      }
       var nnc = nc.mutate(model.nextStart-1, mutationRate)
-      nextGen.push(new Car(nnc, true))
+      nextGen.push(new Car(nnc, scout))
       if(cpcounter != checkpoints.length-1){
         nextGen[x].vel.x = nextvelx
         nextGen[x].vel.y = nextvely
@@ -83,7 +91,6 @@ function Population(){
         nextvelx = 0
         nextvely = 0
         spawnX = beginX
-        console.log('buidasls');
         spawnY = beginY
         currentStart = lifespan
         finalGenes = model.dna.genes
@@ -119,7 +126,7 @@ function Population(){
     for(var i = 0; i < this.cars.length; i++){
       this.cars[i].update()
       this.cars[i].show()
-      this.cars[i].calcFitness()
+      this.cars[i].calcFitness() //asi zmazat
     }
   }
 }
