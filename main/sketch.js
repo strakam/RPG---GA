@@ -3,14 +3,12 @@ var editor = true, pause = true
 // Parameters of blocks
 var modeNum = 0
 var blockType
-var blockSize = [70, 15, 5]
-// Position and dimensions of menu tabs
-var menuWidth = 80, menuHeight = 40, menuPos = 40, menuTop = 50
+var blockSize = [50, 15, 5]
 // Starting position of racers
 var spawnX, spawnY, beginX, beginY, starter = false, cango = false
 // Checkpoint variables
 var cnt = 0, cpfreq = 100, cpdifference = 1, cpcounter = 1, bestTime = 100000000, bestNow = 100000000
-var successCounter = 0, successions = 1, newtime = 0
+var successCounter = 0, successions = 2, newtime = 0
 // Map grid
 var pix = [], distances = [], track = [], checkpoints = [], trace = []
 var created = false, trackLength = 0
@@ -20,7 +18,7 @@ var bg, road, finish, trace = []
 var thisframe = false
 
 function setup() {
-  createCanvas(1300, 680);
+  createCanvas(windowWidth, windowHeight);
   bg = [230, 230, 230, 255]; road = [128, 128, 128, 255]; finish = [255, 0, 0, 255]; cp = [255, 153, 255, 255];
   background(makeColor(bg))
   population = new Population()
@@ -30,11 +28,11 @@ function setup() {
 function draw() {
   //if(pause)
 	background(bg);
-  text(frameRate(), 40, 5000)
   if(mouseIsPressed){
     if(!isClicked()){
-      if(editor)
+      if(editor){
         track.push([mouseX,mouseY,modeNum])
+      }
       if(starter && cnt == 0){
         spawnX = mouseX
         spawnY = mouseY
@@ -48,6 +46,7 @@ function draw() {
   }
   if(pause)
     showBlocks()
+  hovering()
   thisframe = false
   if(cango){
     population.run()
@@ -77,13 +76,16 @@ function bfs(){
   }
   created = true
   var q = []
-  var bfsX, bfsY
+  var bfsX = undefined, bfsY = undefined
   for(var i = 0; i < distances.length; i++)
     for(var x = 0; x < distances[i].length; x++)
       for(var t = 0; t < d.length; t+=2)
         if(!isOut(i+d[t], x+d[t+1]) && distances[i+d[t]][x+d[t+1]] == -2 && distances[i][x] == -1){
           bfsX = i; bfsY = x
         }
+  if(bfsX == undefined && bfsY == undefined){
+    return false
+  }
   q.push([bfsX, bfsY, 0]);
   distances[bfsX][bfsY] = 0
   while(q.length > 0){
@@ -103,5 +105,5 @@ function bfs(){
   cpcounter = cpdifference
   reverse(checkpoints)
   checkpoints.push(5)
-  console.log(checkpoints);
+  return true
 }

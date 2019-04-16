@@ -16,25 +16,26 @@ function isOut(x, y){
     return true;
   return false;
 }
-
 function isClicked(){
-  if(mouseX > menuPos && mouseX < menuPos + menuWidth
-    && mouseY > menuTop && mouseY < menuHeight+menuTop){
-    modeNum = 0;
-    return true;
-  }
-  if(mouseX > menuPos && mouseX < menuPos + menuWidth
-    && mouseY > menuTop+80 && mouseY < menuHeight+menuTop+80){
-    modeNum = 1;
-    return true;
-  }
-  if(mouseX > menuPos && mouseX < menuPos + menuWidth
-    && mouseY > menuTop+160 && mouseY < menuHeight+menuTop+160){
-    bfs();
-    return true;
-  }
-  if(distances.length > 0){
-    console.log(distances[mouseX][mouseY]);
+  if(mouseX > 0 && mouseX < menuPos + menuWidth+40){
+    if(mouseY > menuTop && mouseY < menuTop+40){
+      modeNum = 0;
+      return true;
+    }
+    if(mouseY > menuTop+40 && mouseY < menuTop+80){
+      modeNum = 1;
+      return true;
+    }
+    if(mouseY > menuTop+80 && mouseY < menuTop+120){
+      if(bfs()){
+        starter = true
+        editor = false
+      }
+      return true;
+    }
+    if(distances.length > 0){
+      console.log(distances[mouseX][mouseY]);
+    }
   }
   return false;
 }

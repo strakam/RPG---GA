@@ -15,7 +15,7 @@ function DNA(genes){
     for(var i = 0; i < lifespan; i++){
       var prob = mr
       if(i > mark){
-        if(random(1) < prob){
+        if(Math.random() < prob){
           pole[i] = p5.Vector.random2D()
           pole[i].setMag(random(1))
         }
