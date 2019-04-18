@@ -5,47 +5,47 @@ var modeNum = 0
 var blockType
 var blockSize = [50, 15, 5]
 // Starting position of racers
-var spawnX, spawnY, beginX, beginY, starter = false, cango = false
+var spawnX, spawnY, starter = false, cango = false
 // Checkpoint variables
-var cnt = 0, cpfreq = 100, cpdifference = 1, cpcounter = 1, bestTime = 100000000, bestNow = 100000000
+var cnt = 0, cpfreq = 75, cpdifference = 1, cpcounter = 1, bestTime = 100000000, bestNow = 100000000
 var successCounter = 0, successions = 2, newtime = 0
 // Map grid
-var pix = [], distances = [], track = [], checkpoints = [], trace = []
-var created = false, trackLength = 0
+var pix = [], distances = [], track = [], checkpoints = [], trace = [], cplines = []
+var trackLength = 0
 var d = [-1, 0, 1, 0, 0, 1, 0, -1, -1, -1, 1, 1, -1, 1, 1, -1]
 // Colors
-var bg, road, finish, trace = []
-var thisframe = false
+var bg, road, finish
+var thisframe = false, learningTime, minutes = 0, seconds = 0
 
 function setup() {
-  createCanvas(windowWidth, windowHeight);
+  createCanvas(1300, 680);
   bg = [230, 230, 230, 255]; road = [128, 128, 128, 255]; finish = [255, 0, 0, 255]; cp = [255, 153, 255, 255];
   background(makeColor(bg))
   population = new Population()
-  frameRate(150)
+  frameRate(60)
   blockType = [road, finish, cp]
 }
+
 function draw() {
   //if(pause)
 	background(bg);
   if(mouseIsPressed){
     if(!isClicked()){
       if(editor){
-        track.push([mouseX,mouseY,modeNum])
+        if(mouseX > 220)
+          track.push([mouseX,mouseY,modeNum])
       }
       if(starter && cnt == 0){
         spawnX = mouseX
         spawnY = mouseY
-        beginX = spawnX
-        beginY = spawnY
         population.getStarted()
         cango = true
         starter = false
+        learningTime = millis()
       }
     }
   }
-  if(pause)
-    showBlocks()
+  showBlocks()
   hovering()
   thisframe = false
   if(cango){
@@ -74,7 +74,6 @@ function bfs(){
       var t = [get(x,i)[0], get(x,i)[1], get(x,i)[2], get(x,i)[3]]
     }
   }
-  created = true
   var q = []
   var bfsX = undefined, bfsY = undefined
   for(var i = 0; i < distances.length; i++)
@@ -96,14 +95,13 @@ function bfs(){
       if(!isOut(i+d[t], x+d[t+1]) && distances[i+d[t]][x+d[t+1]] == -1){
         q.push([i+d[t], x+d[t+1], r[2]+1])
         if((r[2]+1) % cpfreq == 0)
-          track.push([i, x, 2])
+          cplines.push([i, x, 2])
         distances[i+d[t]][x+d[t+1]] = r[2]+1
       }
   }
   for(var i = cpfreq; i < trackLength; i+=cpfreq)
     checkpoints.push(i)
-  cpcounter = cpdifference
   reverse(checkpoints)
-  checkpoints.push(5)
+  checkpoints.push(10)
   return true
 }

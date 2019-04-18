@@ -1,5 +1,5 @@
+var maxforce = 0.4, maxspeed = 5
 function Car(dna, x){
-
   // Position, velocity, acceleration
   this.vel = createVector()
   this.pos = createVector(spawnX,spawnY)
@@ -31,18 +31,20 @@ function Car(dna, x){
   this.beginPos = function(){
     this.pos.x = spawnX
     this.pos.y = spawnY
+
   }
 
   // Calculate fitness
   this.calcFitness = function(){
     if(this.crashes)
-      this.fitness += penalty
+      this.fitness = penalty
     else
       this.fitness = distances[floor(this.lastPos.x)][floor(this.lastPos.y)]
+    this.fitness *= this.fitness
   }
   // Applying force to a car
   this.applyForce = function(force){
-    force.limit(0.4)
+    force.limit(maxforce)
     this.acc.add(force)
   }
 
@@ -58,7 +60,7 @@ function Car(dna, x){
       else
         this.applyForce(finalGenes[cnt])
       this.vel.add(this.acc)
-      this.vel.limit(6)
+      this.vel.limit(maxspeed)
       this.pos.add(this.vel)
       if(!thisframe && currentStart > cnt){
         trace.push([this.pos.x, this.pos.y, mag(this.vel.x, this.vel.y)])
@@ -67,12 +69,8 @@ function Car(dna, x){
       this.acc.mult(0)
     }
     var finishDist = distances[floor(this.pos.x)][floor(this.pos.y)]
-    if(finishDist < 5 && finishDist != -3 && finishDist != -2){
-      this.finished = true
-    }
-    else if(finishDist == -2 || finishDist == -3){
+    if(finishDist == -2 || finishDist == -3)
       this.crashed = true
-    }
     else if(finishDist <= checkpoints[cpcounter] && finishDist != -3){
       bestNow = min(bestNow, cnt)
       this.finished = true
