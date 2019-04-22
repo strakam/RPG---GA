@@ -1,6 +1,4 @@
 var currentStart = 0, highMutation = 0.5, lowMutation = 0.15
-var nextvelx = 0
-var nextvely = 0
 var donezo = false
 var finalGenes = []
 // Population & lifespan
@@ -15,7 +13,7 @@ function Population(){
   // Set starting position for every car
   this.getStarted = function(){
     for(var i = 0; i < this.cars.length; i++)
-      this.cars[i].beginPos()
+      this.cars[i].beginposition()
   }
   // Evaluate fitness of every car
   this.evaluate = function(){
@@ -23,6 +21,7 @@ function Population(){
       return a.fitness - b.fitness
     })
   }
+//FIXNUT SOOOOOOOOOOOOOORTTTTTTTTTTTTT LEBO TO BLBNEEE
   // Create a new generation of cars
   this.selection = function(){
     if(successCounter == successions){
@@ -57,7 +56,7 @@ function Population(){
     this.cars = nextGen
   }
   // Check status of cars
-  this.checkRunners = function(){
+  this.checkStatus = function(){
     var sum = 0, success = 0
     for(var i = 0; i < this.cars.length; i++){
       if(this.cars[i].crashed || this.cars[i].finished)
@@ -81,7 +80,7 @@ function Population(){
     for(var i = 0; i < this.cars.length; i++){
       this.cars[i].update()
       this.cars[i].show()
-      this.cars[i].calcFitness() //asi zmazat
+      this.cars[i].calcFitness()
     }
   }
 }

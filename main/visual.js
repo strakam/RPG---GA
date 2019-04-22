@@ -17,7 +17,6 @@ function showBlocks(){
   for(var i = 0; i < trace.length; i++){
     noStroke()
     var cc = map(trace[i][2], maxspeed/2, maxspeed, 0, 1)
-    //console.log(cc);
     fill(lerpColor(color(255, 0, 0), color(0, 255, 0), cc))
     ellipse(trace[i][0],trace[i][1], 5)
   }
@@ -50,33 +49,4 @@ function showBlocks(){
   if(learningTime != undefined)
     seconds = round((millis() - learningTime) / 1000)
   text(minutes + ' min ' + seconds + ' sec', menuPos, menuTop + 300)
-}
-
-function hovering(){
-  if(mouseX > 0 && mouseX < menuPos + menuWidth+40){
-    if(mouseY > menuTop && mouseY < menuTop+40){
-      if(roadHover < 150)
-        roadHover += 20
-      rHoverin = true
-    }
-    if(mouseY > menuTop+40 && mouseY < menuTop+80){
-      if(lineHover < 150)
-        lineHover += 20
-      lHoverin = true
-    }
-    if(mouseY > menuTop+80 && mouseY < menuTop+120){
-      if(runHover < 150)
-        runHover += 20
-      runHoverin = true
-    }
-  }
-  if(roadHover > -15 && !rHoverin)
-    roadHover -= 20
-  if(lineHover > -15 && !lHoverin)
-    lineHover -= 20
-  if(runHover > -15 && !runHoverin)
-    runHover -= 20
-  rHoverin = false
-  lHoverin = false
-  runHoverin = false
 }
