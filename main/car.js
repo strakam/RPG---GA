@@ -1,6 +1,6 @@
-var maxforce = 0.3, maxspeed = 4
+var maxforce = 0.35, maxspeed = 4
 function Car(dna, x){
-  // positionition, velocityocity, accelerationeleration
+  // position, velocityo, acceleration
   this.velocity = createVector()
   this.position = createVector(spawnX,spawnY)
   this.acceleration = createVector()

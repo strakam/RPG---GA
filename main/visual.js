@@ -8,7 +8,6 @@ function showBlocks(){
     fill(blockType[track[i][2]])
     ellipse(track[i][0],track[i][1],blockSize[track[i][2]])
   }
-  if(!pause)
   for(var i = 0; i < cplines.length; i++){
     noStroke()
     fill(blockType[2])
@@ -49,4 +48,6 @@ function showBlocks(){
   if(learningTime != undefined)
     seconds = round((millis() - learningTime) / 1000)
   text(minutes + ' min ' + seconds + ' sec', menuPos, menuTop + 300)
+  text('Maxspeed', menuPos, menuTop+370)
+  text('Maxforce', menuPos, menuTop+450)
 }

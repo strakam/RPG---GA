@@ -26,6 +26,9 @@ function Population(){
   this.selection = function(){
     if(successCounter == successions){
       currentStart = this.cars[0].nextStart
+      currentcps = []
+      for(var i = cpcounter-2; i <= cpcounter; i++)
+        currentcps.push(checkpoints[i])
       if(cpcounter == checkpoints.length-1){
         finalGenes = this.cars[0].dna.genes
         donezo = true
@@ -79,7 +82,8 @@ function Population(){
   this.run = function(){
     for(var i = 0; i < this.cars.length; i++){
       this.cars[i].update()
-      this.cars[i].show()
+      if(!turbo)
+        this.cars[i].show()
       this.cars[i].calcFitness()
     }
   }

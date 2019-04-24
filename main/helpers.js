@@ -17,7 +17,18 @@ function isOut(x, y){
     return true
   return false
 }
-
+function inputs(){
+  msInput = createInput(4)
+  mfInput = createInput(0.35)
+  msInput.position(55, 440)
+  mfInput.position(55, 520)
+}
+function setmaxspeed(){
+  maxspeed = this.value()
+}
+function setmaxforce(){
+  maxforce = this.value()
+}
 function saveData(counter){
   saveStrings(track, 'track'+counter+'.txt')
   //saveStrings([spawnX, spawnY], 'data'+counter+'.txt')
@@ -86,12 +97,8 @@ function keyPressed(){
     editor = true
   if(key == 'q')
     editor = false
-  if(key == 'p'){
-    if(!pause)
-      pause = true
-    else
-      pause = false
-  }
+  if(key == 't')
+    turbo = !turbo
 }
 function bfs(){
   showBlocks()
@@ -135,5 +142,6 @@ function bfs(){
     checkpoints.push(i)
   reverse(checkpoints)
   checkpoints.push(10)
+  currentcps = [checkpoints[0], checkpoints[1], checkpoints[2]]
   return true
 }
