@@ -34,7 +34,7 @@ function saveData(counter){
   //saveStrings([spawnX, spawnY], 'data'+counter+'.txt')
 }
 function loadData(file){
-   loadStrings(file+'.txt', dataloaded);
+  loadStrings(file+'.txt', dataloaded);
 }
 function dataloaded(data){
   track = []
@@ -99,6 +99,8 @@ function keyPressed(){
     editor = false
   if(key == 't')
     turbo = !turbo
+  if(key == 'p')
+    showcps = !showcps
 }
 function bfs(){
   showBlocks()
@@ -142,6 +144,5 @@ function bfs(){
     checkpoints.push(i)
   reverse(checkpoints)
   checkpoints.push(10)
-  currentcps = [checkpoints[0], checkpoints[1], checkpoints[2]]
   return true
 }

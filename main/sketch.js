@@ -2,16 +2,16 @@
 var editor = true, turbo = false
 // Parameters of blocks
 var modeNum = 0
-var blockType
-var blockSize = [50, 15, 5]
+var blockType, blockSize = [50, 15, 5]
 // Starting position of racers
 var spawnX, spawnY, starter = false, cango = false
 // Checkpoint variables
-var cnt = 0, cpfreq = 100, cpdifference = 1, cpcounter = 1, bestTime = 100000000, bestNow = 100000000
-var successCounter = 0, successions = 1, newtime = 0
-var currentcps = []
+var cnt = 0, cpfreq = 100, cpdifference = 1, cpcounter = 1, successions = 3
+var bestTime = 100000000, bestNow = 100000000, showcps = false
+var successCounter = 0, newtime = 0
+var checkpoints = [], trace = [], cplines = []
 // Map grid
-var pix = [], distances = [], track = [], checkpoints = [], trace = [], cplines = []
+var pix = [], distances = [], track = []
 var trackLength = 0
 var d = [-1, 0, 1, 0, 0, 1, 0, -1, -1, -1, 1, 1, -1, 1, 1, -1]
 // Colors

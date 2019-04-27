@@ -1,8 +1,8 @@
-var currentStart = 0, highMutation = 0.5, lowMutation = 0.15
-var donezo = false
+var highMutation = 0.4, lowMutation = 0.1
+var donezo = false, currentStart = 0
 var finalGenes = []
 // Population & lifespan
-var population, newBorns = 1500, lifespan = 500
+var population, newBorns = 1500, lifespan = 800
 function Population(){
   // Array of cars
   this.cars = []
@@ -21,14 +21,11 @@ function Population(){
       return a.fitness - b.fitness
     })
   }
-//FIXNUT SOOOOOOOOOOOOOORTTTTTTTTTTTTT LEBO TO BLBNEEE
+
   // Create a new generation of cars
   this.selection = function(){
     if(successCounter == successions){
       currentStart = this.cars[0].nextStart
-      currentcps = []
-      for(var i = cpcounter-2; i <= cpcounter; i++)
-        currentcps.push(checkpoints[i])
       if(cpcounter == checkpoints.length-1){
         finalGenes = this.cars[0].dna.genes
         donezo = true
@@ -42,7 +39,7 @@ function Population(){
       }
     }
     var nextGen = []
-    var nc = this.cars[0].dna, scout = false
+    var nc = this.cars[0].dna.mutate(cnt, 0), scout = false
     nextGen.push(new Car(nc, scout))
     for(var x = 0; x < newBorns; x++){
       if(x < 150){
@@ -68,11 +65,17 @@ function Population(){
         success++
     }
     if(success >= 6 || sum == this.cars.length){
-      if(success >= 6)
-        if(bestNow < bestTime)
+      if(success >= 6){
+        if(bestNow < bestTime){
+          if(bestNow + 2 > bestTime)
+            successCounter++
+          else
+            successCounter = 0
           bestTime = min(bestTime, bestNow)
+        }
         else
-          successCounter++;
+          successCounter++
+        }
       return true
     }
     else
@@ -82,8 +85,7 @@ function Population(){
   this.run = function(){
     for(var i = 0; i < this.cars.length; i++){
       this.cars[i].update()
-      if(!turbo)
-        this.cars[i].show()
+      this.cars[i].show()
       this.cars[i].calcFitness()
     }
   }

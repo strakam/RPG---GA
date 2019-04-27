@@ -8,6 +8,7 @@ function showBlocks(){
     fill(blockType[track[i][2]])
     ellipse(track[i][0],track[i][1],blockSize[track[i][2]])
   }
+  if(showcps)
   for(var i = 0; i < cplines.length; i++){
     noStroke()
     fill(blockType[2])
